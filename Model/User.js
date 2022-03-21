@@ -37,16 +37,21 @@ User.init(
   }
 );
 
+User.hasMany(Token, {
+  foreignKey: "UserId",
+  onDelete: "CASCADE",
+});
+
+Token.belongsTo(User, {
+  foreignKey: "UserId",
+});
+
 //обновление Модели
 User.sync({ force: true })
   .then(() => {
     console.log("Tables have been created");
   })
   .catch((err) => console.log(err));
-
-// User.hasMany(Token, {
-//   foreignKey: DataTypes.UUID,
-// });
 
 // Token.belongsTo(User);
 

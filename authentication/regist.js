@@ -20,24 +20,29 @@ async function regist(req, res, next) {
       password: pasSave,
     });
 
-    const token = generateToken({ user: user.username });
+    User.findAll({ attributes: ["id"] }).then((id) => {
+      console.log(id);
+      const token = jwt.sign({ id }, process.env.JWT_KEY);
+      console.log(token);
 
-    const tokenUser = Token.build({ token: token });
-    tokenUser.save();
+      const tokenUser = Token.build({ token: token });
+      // console.log(tokenUser);
+      tokenUser.save();
 
-    User.hasMany(Token);
+      // User.hasMany(Token);
 
-    Token.belongsTo(User);
-    return res
-      .cookie("access_token", token, {
-        maxAge: 3600 * 24,
-        path: "/",
-        httpOnly: false,
-        sameSite: "None", // отправка cookie
-        secure: true,
-      })
-      .status(200)
-      .json({ user: user.username });
+      // Token.belongsTo(User);
+      // return res
+      //   .cookie("access_token", token, {
+      //     maxAge: 3600 * 24,
+      //     path: "/",
+      //     httpOnly: false,
+      //     sameSite: "None", // отправка cookie
+      //     secure: true,
+      //   })
+      //   .status(200)
+      //   .json({ user: user.username });
+    });
   } catch (err) {
     console.log("Message", err);
   }

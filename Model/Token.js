@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
+const User = require("./User");
 const sequelize = new Sequelize(`${process.env.POSTGRES_URL}`);
 
 class Token extends Sequelize.Model {}
@@ -16,6 +17,8 @@ Token.init(
     tableName: "Tokens", // Название модели (обязательно)
   }
 );
+
+// Token.belongsTo(User);
 
 //обновление Модели
 Token.sync({ force: true })
